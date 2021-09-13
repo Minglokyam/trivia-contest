@@ -1,8 +1,8 @@
+import { decodeEntity } from 'html-entities';
 import React, { useState } from 'react';
 import { Flex, Radio, RadioGroup, Stack, Text } from '@chakra-ui/react';
 import { Wrapper } from './Wrapper';
 import { ProcessedQuestion } from '../types';
-import { replaceHtmlSpecialCharacter } from '../utils/processString';
 
 interface QuestionCardProps {
     changeAnswer: (key: string, value: number) => void;
@@ -30,7 +30,7 @@ const QuestionCard: React.FC<QuestionCardProps>= ({changeAnswer, questionIndex, 
             <Flex>
                 <Text fontSize='lg'>{questionIndex}</Text>
                 <Text fontSize='lg' ml={2}>
-                    {replaceHtmlSpecialCharacter(processedQuestion.question)}
+                    {decodeEntity(processedQuestion.question)}
                 </Text>
             </Flex>
             <RadioGroup
@@ -63,7 +63,7 @@ const QuestionCard: React.FC<QuestionCardProps>= ({changeAnswer, questionIndex, 
                                     p={1}
                                     borderRadius={4}
                                 >
-                                    {replaceHtmlSpecialCharacter(answer_text)}
+                                    {decodeEntity(answer_text)}
                                 </Text>
                             </Radio>
                         );

@@ -10,16 +10,3 @@ export const shuffleArray = (array) => {
 export const removeUnwantedCharacters = (text): string => {
     return text.replace(/[^A-Z0-9]/ig, "_");
 }
-
-export const replaceHtmlSpecialCharacter = (text) => {
-    if(typeof text === 'string') {
-        return text
-        .replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&quot;/g, '"')
-        .replace(/&#039;/g, "'")
-        .replace(/&uacute;/g, 'ú');
-    }
-    return text;
-}
