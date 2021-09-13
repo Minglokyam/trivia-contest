@@ -23,7 +23,7 @@ const Index: React.FC<IndexProps> = ({userData}) => {
           <Table variant='striped'>
             <Thead>
               <Tr>
-                <Th>Ranking</Th>
+                <Th fontSize='lg'>Ranking</Th>
               </Tr>
               <Tr>
                 <Th>Username</Th>
