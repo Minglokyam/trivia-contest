@@ -1,0 +1,1 @@
+export const BROWSER_USERNAME_KEY = 'browser_username_key';

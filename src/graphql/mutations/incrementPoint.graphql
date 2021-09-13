@@ -1,0 +1,3 @@
+mutation IncrementPoint($incrementPoints: Int!, $id: Int!) {
+    incrementPoint(incrementPoints: $incrementPoints, id: $id)
+}
