@@ -53,4 +53,4 @@ export async function getServerSideProps({ req }) {
   }};
 }
 
-export default withApollo({ssr: true})(Index);
+export default withApollo()(Index);
