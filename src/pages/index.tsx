@@ -1,4 +1,5 @@
 import React from 'react';
+import { NextPage } from 'next';
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import Layout from '../components/Layout';
 import { Wrapper } from '../components/Wrapper';
@@ -11,7 +12,7 @@ interface IndexProps {
   userData: string;
 }
 
-const Index: React.FC<IndexProps> = ({userData}) => {
+const Index: NextPage<IndexProps> = ({userData}) => {
   const queryResult = useUsersQuery();
 
   const users = queryResult.data?.users ?? [];
@@ -45,12 +46,11 @@ const Index: React.FC<IndexProps> = ({userData}) => {
   )
 }
 
-export async function getServerSideProps({ req }) {
+Index.getInitialProps = async ({ req }) => {
   const cookie = parseCookie(req);
-
-  return {props: { 
-      userData: cookie[BROWSER_USERNAME_KEY] ?? ''
-  }};
+  return {
+    userData: cookie[BROWSER_USERNAME_KEY] ?? ''
+  };
 }
 
-export default withApollo()(Index);
+export default withApollo({ssr: true})(Index);
