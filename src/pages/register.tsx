@@ -27,7 +27,8 @@ const Register: React.FC<RegisterProps> = () => {
                 refetchQueries: [{ query: UsersDocument }]
             });
             if(response.data?.register.user){
-                Cookie.set(BROWSER_USERNAME_KEY, `${response.data.register.user.id}+${response.data.register.user.username}`);
+                const {id, username, updatedAt} = response.data.register.user;
+                Cookie.set(BROWSER_USERNAME_KEY, `${id}+${username}+${updatedAt}`);
                 router.push('/');
             }
             else if(response.data?.register.errors){

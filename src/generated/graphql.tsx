@@ -28,7 +28,7 @@ export type FieldError = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  incrementPoint: Scalars['Boolean'];
+  incrementPoint: UserResponse;
   login: UserResponse;
   register: UserResponse;
 };
@@ -77,7 +77,7 @@ export type IncrementPointMutationVariables = Exact<{
 }>;
 
 
-export type IncrementPointMutation = { __typename?: 'Mutation', incrementPoint: boolean };
+export type IncrementPointMutation = { __typename?: 'Mutation', incrementPoint: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, username: string, updatedAt: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
 
 export type LoginMutationVariables = Exact<{
   usernameOrEmail: Scalars['String'];
@@ -85,24 +85,34 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, username: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, username: string, updatedAt: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
 
 export type RegisterMutationVariables = Exact<{
   options: CredentialOptions;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, username: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, username: string, updatedAt: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> } };
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', username: string, points: number }> };
+export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', username: string, points: number, updatedAt: string }> };
 
 
 export const IncrementPointDocument = gql`
     mutation IncrementPoint($incrementPoints: Int!, $id: Int!) {
-  incrementPoint(incrementPoints: $incrementPoints, id: $id)
+  incrementPoint(incrementPoints: $incrementPoints, id: $id) {
+    user {
+      id
+      username
+      updatedAt
+    }
+    errors {
+      field
+      message
+    }
+  }
 }
     `;
 export type IncrementPointMutationFn = Apollo.MutationFunction<IncrementPointMutation, IncrementPointMutationVariables>;
@@ -138,6 +148,7 @@ export const LoginDocument = gql`
     user {
       id
       username
+      updatedAt
     }
     errors {
       field
@@ -179,6 +190,7 @@ export const RegisterDocument = gql`
     user {
       id
       username
+      updatedAt
     }
     errors {
       field
@@ -218,6 +230,7 @@ export const UsersDocument = gql`
   users {
     username
     points
+    updatedAt
   }
 }
     `;

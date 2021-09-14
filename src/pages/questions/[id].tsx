@@ -4,6 +4,7 @@ import withApollo from '../../utils/withApollo';
 import QuestionCard from '../../components/QuestionCard';
 import { removeUnwantedCharacters, shuffleArray } from '../../utils/processString';
 import { Wrapper } from '../../components/Wrapper';
+import Cookie from 'js-cookie';
 import Layout from '../../components/Layout';
 import { parseCookie } from '../../utils/parseCookie';
 import { BROWSER_USERNAME_KEY } from '../../utils/constants';
@@ -11,6 +12,7 @@ import { useRouter } from 'next/dist/client/router';
 import { useIncrementPointMutation, UsersDocument } from '../../generated/graphql';
 import { Answer, Question } from '../../types';
 import useExamineUploadCondition from '../../utils/useExamineUploadCondition';
+import { checkToday } from '../../utils/checkToday';
 
 interface QuestionsProps {
     fetchedQuestions: Question[];
@@ -76,7 +78,7 @@ const Questions: React.FC<QuestionsProps> = ({userData, fetchedQuestions}) => {
     });
   };
 
-  const computeMark = (): string => {
+  const computeMark = async (): Promise<string> => {
     let totalMark = 0;
     const answerResultValues: number[] = Object.values(answerResult);
 
@@ -84,10 +86,14 @@ const Questions: React.FC<QuestionsProps> = ({userData, fetchedQuestions}) => {
       totalMark += mark;
     });
 
-    incrementPoint({
+    const response = await incrementPoint({
       variables: {incrementPoints: totalMark, id: parseInt(router.query.id as string)},
       refetchQueries: [{ query: UsersDocument }]
     });
+
+    const {updatedAt} = response.data.incrementPoint.user;
+
+    Cookie.set(BROWSER_USERNAME_KEY, `${userData.split('+')[0]}+${userData.split('+')[1]}+${updatedAt}`);
 
     setVisible(true);
 
@@ -116,8 +122,7 @@ const Questions: React.FC<QuestionsProps> = ({userData, fetchedQuestions}) => {
           </Stack>
           <Text mt={2} fontSize='lg'>Score: {total}</Text>
           <Flex mt={2} mb={4}>
-            <Button mr={1} onClick={() => setTotal(computeMark())} isDisabled={visible}>Submit</Button>
-            <Button ml={1} mr={1} onClick={() => router.reload()} isDisabled={!visible}>Restart</Button>
+            <Button mr={1} onClick={async () => setTotal(await computeMark())} isDisabled={visible}>Submit</Button>
             <Button ml={1} onClick={() => router.push('/')}>Go back</Button>
           </Flex>
         </Flex>
@@ -130,10 +135,14 @@ export async function getServerSideProps({req}) {
     const cookie = parseCookie(req);
     const res = await fetch('https://opentdb.com/api.php?amount=10&type=multiple');
     const questionsResponse = await res.json();
+    const userData = cookie[BROWSER_USERNAME_KEY];
 
     const getServerSidePropsResult = {};
 
-    if(!cookie[BROWSER_USERNAME_KEY]){
+    if(
+      !userData ||
+      checkToday(userData.split('+')[2])
+    ){
       getServerSidePropsResult['redirect'] = {
         permanent: false,
         destination: '/'
@@ -143,7 +152,7 @@ export async function getServerSideProps({req}) {
     }
     else {
       getServerSidePropsResult['props'] = {
-        userData: cookie[BROWSER_USERNAME_KEY],
+        userData,
         fetchedQuestions: questionsResponse.results
       };
     }

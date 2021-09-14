@@ -1,3 +1,13 @@
 mutation IncrementPoint($incrementPoints: Int!, $id: Int!) {
-    incrementPoint(incrementPoints: $incrementPoints, id: $id)
+    incrementPoint(incrementPoints: $incrementPoints, id: $id) {
+        user {
+            id
+            username
+            updatedAt
+        }
+        errors {
+            field
+            message
+        }
+    }
 }

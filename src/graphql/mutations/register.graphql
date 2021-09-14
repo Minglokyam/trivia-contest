@@ -3,6 +3,7 @@ mutation Register($options: CredentialOptions!){
         user {
             id
             username
+            updatedAt
         }
         errors {
             field

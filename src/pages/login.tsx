@@ -24,7 +24,8 @@ const Login: React.FC<LoginProps> = () => {
         onSubmit={async (values, {setErrors}) => {
             const response = await login({variables: values});
             if(response.data?.login.user){
-                Cookie.set(BROWSER_USERNAME_KEY, `${response.data.login.user.id}+${response.data.login.user.username}`);
+                const {id, username, updatedAt} = response.data.login.user;
+                Cookie.set(BROWSER_USERNAME_KEY, `${id}+${username}+${updatedAt}`);
                 router.push('/');
             }
             else if(response.data?.login.errors){

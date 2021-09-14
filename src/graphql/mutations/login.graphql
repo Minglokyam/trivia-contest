@@ -3,6 +3,7 @@ mutation Login($usernameOrEmail: String!, $password: String!) {
         user {
             id
             username
+            updatedAt
         }
         errors {
             field
