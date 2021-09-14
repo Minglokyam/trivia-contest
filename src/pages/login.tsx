@@ -79,4 +79,4 @@ export async function getServerSideProps({ req }) {
     return getServerSidePropsResult;
 }
 
-export default withApollo()(Login);
+export default withApollo({ssr: true})(Login);
