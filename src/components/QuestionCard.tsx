@@ -1,4 +1,4 @@
-import { decodeEntity } from 'html-entities';
+import { decodeHTML } from 'entities';
 import React, { useState } from 'react';
 import { Flex, Radio, RadioGroup, Stack, Text } from '@chakra-ui/react';
 import { Wrapper } from './Wrapper';
@@ -28,9 +28,9 @@ const QuestionCard: React.FC<QuestionCardProps>= ({changeAnswer, questionIndex, 
     return (
         <Wrapper>
             <Flex>
-                <Text fontSize='lg'>{questionIndex}</Text>
+                <Text fontSize='lg'>{questionIndex}.</Text>
                 <Text fontSize='lg' ml={2}>
-                    {decodeEntity(processedQuestion.question)}
+                    {decodeHTML(processedQuestion.question)}
                 </Text>
             </Flex>
             <RadioGroup
@@ -54,7 +54,7 @@ const QuestionCard: React.FC<QuestionCardProps>= ({changeAnswer, questionIndex, 
                         return (
                             <Radio
                                 value={processed_answer_text}
-                                key={processed_answer_text} 
+                                key={processed_answer_text}
                                 size='lg'
                                 isDisabled={visible}
                             >
@@ -63,7 +63,7 @@ const QuestionCard: React.FC<QuestionCardProps>= ({changeAnswer, questionIndex, 
                                     p={1}
                                     borderRadius={4}
                                 >
-                                    {decodeEntity(answer_text)}
+                                    {decodeHTML(answer_text)}
                                 </Text>
                             </Radio>
                         );

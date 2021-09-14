@@ -98,7 +98,7 @@ const Questions: React.FC<QuestionsProps> = ({userData, fetchedQuestions}) => {
     <Layout userData={userData}>
       <Wrapper>
         <Flex direction='column' alignItems='center'>
-          <Text mt={1} fontSize='lg'>Questions</Text>
+          <Text fontWeight='bold' mt={1} fontSize='xl'>Questions</Text>
           <Stack>
                 <Box>
                     {
@@ -115,9 +115,10 @@ const Questions: React.FC<QuestionsProps> = ({userData, fetchedQuestions}) => {
                 </Box> 
           </Stack>
           <Text mt={2} fontSize='lg'>Score: {total}</Text>
-          <Flex mt={2}>
-            <Button onClick={() => setTotal(computeMark())} isDisabled={visible}>Submit</Button>
-            <Button onClick={() => router.reload()} isDisabled={!visible}>Restart</Button>
+          <Flex mt={2} mb={4}>
+            <Button mr={1} onClick={() => setTotal(computeMark())} isDisabled={visible}>Submit</Button>
+            <Button ml={1} mr={1} onClick={() => router.reload()} isDisabled={!visible}>Restart</Button>
+            <Button ml={1} onClick={() => router.push('/')}>Go back</Button>
           </Flex>
         </Flex>
       </Wrapper>
