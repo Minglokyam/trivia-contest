@@ -1,6 +1,9 @@
 import { useRouter } from "next/dist/client/router";
 import { useEffect } from "react";
 
+// Author: Alireza Esfahani
+// Modified: Brian Tompsett
+// Source: https://stackoverflow.com/questions/63064778/next-js-warn-user-for-unsaved-form-before-route-change
 const useExamineUploadCondition = (saved) => {
   const router = useRouter();
 
